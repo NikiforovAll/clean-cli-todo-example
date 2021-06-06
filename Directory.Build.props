@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup Label="Build">
+    <LangVersion>9.0</LangVersion>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <!--<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>-->
+    <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
+    <!--<NoWarn>VSTHRD111;CS1591;CA2007;CA1014;$(NoWarn)</NoWarn>-->
+  </PropertyGroup>
+
+  <PropertyGroup Label="Authoring">
+    <Company>nikiforovall</Company>
+    <Authors>nikiforovall</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Repository">
+    <RepositoryUrl>https://github.com/NikiforovAll/clean-cli-todo-example</RepositoryUrl>
+    <LicenseUrl></LicenseUrl>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+</Project>

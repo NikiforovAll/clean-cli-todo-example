@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CleanCli.Todo.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "todolist create"
+    }
+  }
+}

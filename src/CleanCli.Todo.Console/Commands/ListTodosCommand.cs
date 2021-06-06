@@ -1,13 +1,14 @@
 namespace CleanCli.Todo.Console.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.CommandLine;
     using System.CommandLine.Invocation;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using CleanCli.Todo.Application.TodoLists.Queries.GetTodos;
+    using MediatR;
     using Spectre.Console;
-    using Spectre.Console.Rendering;
 
     public class ListTodosCommand : Command
     {
@@ -20,9 +21,37 @@ namespace CleanCli.Todo.Console.Commands
 
         public new class Handler : ICommandHandler
         {
-            public Task<int> InvokeAsync(InvocationContext context)
+            private readonly IMediator meditor;
+
+            public Handler(IMediator meditor) =>
+                this.meditor = meditor ?? throw new ArgumentNullException(nameof(meditor));
+
+            public async Task<int> InvokeAsync(InvocationContext context)
             {
-                throw new NotImplementedException();
+                var lists = (await this.meditor.Send(new GetTodosQuery { }))?.Lists;
+                var table = new Table() { Title = new TableTitle($"Todo Lists ({lists?.Count})") };
+                _ = table.AddColumn("Id");
+                _ = table.AddColumn("Title");
+
+                foreach (var list in lists)
+                {
+                    table.AddRow(list.Id.ToString(CultureInfo.InvariantCulture), list.Title);
+                }
+                var barchart = new BarChart()
+                    .Width(60)
+                    .Label($"[green bold underline]Summary[/]")
+                    .CenterLabel()
+                    .AddItem("Lists", lists.Count, Color.Orange1)
+                    .AddItem("Items", lists.SelectMany(l => l.Items).Count(), Color.Orange4);
+
+                var grid = new Grid().Alignment(Justify.Center);
+                grid.AddColumn(new GridColumn());
+                grid.AddRow(table);
+                grid.AddRow(barchart);
+
+                AnsiConsole.Render(new Panel(grid));
+
+                return 0;
             }
         }
     }

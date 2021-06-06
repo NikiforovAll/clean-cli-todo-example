@@ -39,7 +39,7 @@ Task("Build")
 
 Task("Test")
     .Description("Runs unit tests and outputs test results to the artefacts directory.")
-    .DoesForEach(GetFiles("./Tests/**/*.csproj"), project =>
+    .DoesForEach(GetFiles("./tests/**/*.csproj"), project =>
     {
         DotNetCoreTest(
             project.ToString(),
@@ -59,27 +59,9 @@ Task("Test")
             });
     });
 
-Task("Pack")
-    .Description("Creates NuGet packages and outputs them to the artifacts directory.")
-    .Does(() =>
-    {
-        DotNetCorePack(
-            ".",
-            new DotNetCorePackSettings()
-            {
-                Configuration = configuration,
-                IncludeSymbols = true,
-                MSBuildSettings = new DotNetCoreMSBuildSettings().WithProperty("SymbolPackageFormat", "snupkg"),
-                NoBuild = true,
-                NoRestore = true,
-                OutputDirectory = artefactsDirectory,
-            });
-    });
-
 Task("Default")
     .Description("Cleans, restores NuGet packages, builds the solution, runs unit tests and then creates NuGet packages.")
     .IsDependentOn("Build")
-    .IsDependentOn("Test")
-    .IsDependentOn("Pack");
+    .IsDependentOn("Test");
 
 RunTarget(target);

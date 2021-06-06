@@ -1,13 +1,10 @@
 namespace CleanCli.Todo.Console.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.CommandLine;
     using System.CommandLine.Invocation;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Spectre.Console;
-    using Spectre.Console.Rendering;
+    using MediatR;
 
     public class DeleteTodoListCommand : Command
     {
@@ -21,9 +18,21 @@ namespace CleanCli.Todo.Console.Commands
 
         public new class Handler : ICommandHandler
         {
-            public Task<int> InvokeAsync(InvocationContext context)
+            private readonly IMediator meditor;
+
+            public int Id { get; set; }
+
+            public Handler(IMediator meditor) =>
+                this.meditor = meditor ?? throw new ArgumentNullException(nameof(meditor));
+
+            public async Task<int> InvokeAsync(InvocationContext context)
             {
-                throw new NotImplementedException();
+                await this.meditor.Send(new Application.TodoLists.Commands.DeleteTodoList.DeleteTodoListCommand
+                {
+                    Id = this.Id,
+                });
+
+                return 0;
             }
         }
     }

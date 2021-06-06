@@ -2,7 +2,7 @@
   "profiles": {
     "CleanCli.Todo.Console": {
       "commandName": "Project",
-      "commandLineArgs": "todolist create"
+      "commandLineArgs": "todolist get 1"
     }
   }
 }

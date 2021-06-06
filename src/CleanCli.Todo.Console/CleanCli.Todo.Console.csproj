@@ -17,6 +17,7 @@
 
   <ItemGroup Label="Package References">
     <PackageReference Include="AutoBogus" Version="2.13.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="ObjectDumper.NET" Version="3.0.20251.1" />
@@ -30,6 +31,11 @@
     <PackageReference Include="Spectre.Console" Version="0.39.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21216.1" />
     <PackageReference Include="System.CommandLine.Hosting" Version="0.3.0-alpha.21216.1" />
+  </ItemGroup>
+
+  <ItemGroup Label="Project References">
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

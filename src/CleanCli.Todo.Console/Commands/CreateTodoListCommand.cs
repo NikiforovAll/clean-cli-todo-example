@@ -1,14 +1,10 @@
 namespace CleanCli.Todo.Console.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.CommandLine;
     using System.CommandLine.Invocation;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.Logging;
-    using Spectre.Console;
-    using Spectre.Console.Rendering;
+    using MediatR;
 
     public class CreateTodoListCommand : Command
     {
@@ -25,16 +21,22 @@ namespace CleanCli.Todo.Console.Commands
 
         public new class Handler : ICommandHandler
         {
-            private readonly ILogger<Handler> logger;
+            private readonly IMediator meditor;
 
-            public Handler(ILogger<Handler> logger)
+            public string Title { get; set; }
+
+            public Handler(IMediator meditor) =>
+                this.meditor = meditor ?? throw new ArgumentNullException(nameof(meditor));
+
+            public async Task<int> InvokeAsync(InvocationContext context)
             {
-                this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            }
-            public Task<int> InvokeAsync(InvocationContext context)
-            {
-                this.logger.LogInformation("About to insert TodoList into storage");
-                throw new NotImplementedException();
+                await this.meditor.Send(
+                    new Application.TodoLists.Commands.CreateTodoList.CreateTodoListCommand
+                    {
+                        Title = this.Title,
+                    });
+
+                return 0;
             }
         }
     }
